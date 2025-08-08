@@ -1,0 +1,19 @@
+$TTL 3600
+@   IN  SOA ns.mongo.local. admin.mongo.local. (
+        2025080801 ; serial
+        3600       ; refresh
+        600        ; retry
+        1209600    ; expire
+        3600 )     ; minimum
+
+    IN  NS ns.mongo.local.
+
+ns              IN  A     172.28.0.10
+
+mongo1.mongo.local.   IN  A 172.28.0.2
+mongo2.mongo.local.   IN  A 172.28.0.3
+mongo3.mongo.local.   IN  A 172.28.0.4
+
+_mongodb._tcp.cluster.mongo.local.   IN SRV 0 5 27017 mongo1.mongo.local.
+_mongodb._tcp.cluster.mongo.local.   IN SRV 0 5 27017 mongo2.mongo.local.
+_mongodb._tcp.cluster.mongo.local.   IN SRV 0 5 27017 mongo3.mongo.local.

@@ -1,0 +1,52 @@
+services:
+  mongo1:
+    image: mongo:6
+    container_name: mongo1
+    hostname: mongo1.mongo.local
+    command: ["mongod", "--replSet", "rs0", "--bind_ip_all"]
+    ports:
+      - "27018:27017"
+    networks:
+      mongo_net:
+        ipv4_address: 172.28.0.2
+    dns: 172.28.0.10
+
+  mongo2:
+    image: mongo:6
+    container_name: mongo2
+    hostname: mongo2.mongo.local
+    command: ["mongod", "--replSet", "rs0", "--bind_ip_all"]
+    networks:
+      mongo_net:
+        ipv4_address: 172.28.0.3
+    dns: 172.28.0.10
+
+  mongo3:
+    image: mongo:6
+    container_name: mongo3
+    hostname: mongo3.mongo.local
+    command: ["mongod", "--replSet", "rs0", "--bind_ip_all"]
+    networks:
+      mongo_net:
+        ipv4_address: 172.28.0.4
+    dns: 172.28.0.10
+
+  coredns:
+    image: coredns/coredns:latest
+    container_name: coredns
+    volumes:
+      - ./Corefile:/Corefile
+      - ./db.mongo.local:/zones/db.mongo.local
+    command: ["-conf", "/Corefile"]
+    ports:
+      - "1053:53/udp"
+    networks:
+      mongo_net:
+        ipv4_address: 172.28.0.10
+
+networks:
+  mongo_net:
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.28.0.0/16

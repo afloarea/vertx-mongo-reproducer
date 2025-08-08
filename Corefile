@@ -1,0 +1,11 @@
+mongo.local:53 {
+    file /zones/db.mongo.local cluster.mongo.local
+    log
+    errors
+}
+
+. {
+    forward . 8.8.8.8 8.8.4.4
+    log
+    errors
+}
